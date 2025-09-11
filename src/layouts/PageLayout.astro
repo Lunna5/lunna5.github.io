@@ -1,0 +1,17 @@
+---
+import { NavBar } from '@/components/navbar';
+import BaseLayout from './BaseLayout.astro';
+const { currentPage } = Astro.props;
+---
+
+<BaseLayout>
+  <main class='max-w-4xl mx-auto drop-shadow-2xl min-h-[100vh] flex flex-col bg-content'>
+    <header>
+      <NavBar currentPage={currentPage} transition:persist client:load />
+    </header>
+    <hr class='border-t border-gray-300 mx-4' />
+    <main class='p-4 flex-1'>
+      <slot />
+    </main>
+  </main>
+</BaseLayout>

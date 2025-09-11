@@ -1,0 +1,89 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Good Enough Regular';
+  src: url('/fonts/good_enough_regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: block;
+  font-family: 'SerenityOS Emoji';
+  font-style: normal;
+  src: local('SerenityOS Emoji'), url('/fonts/SerenityOS-Emoji.ttf');
+  unicode-range: U+00A9, U+00AE, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A-231B, U+2328,
+    U+2388, U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA-25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF, U+2934-2935,
+    U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F64F, U+1F680-1F6FF, U+1F774-1F77F, U+1F7D5-1F7FF,
+    U+1F80C-1F80F, U+1F848-1F84F, U+1F85A-1F85F, U+1F888-1F88F, U+1F8AE-1F8FF, U+1F90C-1FAFF;
+}
+
+body {
+  background-image: repeating-radial-gradient(#f8f1f1ee 88%, #963fdd 90%);
+  background-size: 50px 50px;
+}
+
+:root {
+  --font-default: 'SerenityOS Emoji', 'Helvetica Neue', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-serif: 'SerenityOS Emoji', 'Good Enough Regular', sans-serif;
+  --color-background: #f5e1f5;
+  --color-content: #ffffff;
+}
+
+.image-light {
+  display: block;
+}
+
+.image-dark {
+  display: none;
+}
+
+:root.dark .image-light {
+  display: none;
+}
+
+:root.dark .image-dark {
+  display: block;
+}
+
+.content {
+  background-image: url('/src/assets/img/page_bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner {
+  background-image: url('/src/assets/img/svg/banner.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner li a {
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(23px);
+  -webkit-backdrop-filter: blur(23px);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0px 0px rgba(255, 255, 255, 0);
+  position: relative;
+  overflow: hidden;
+}
+
+.banner li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent, rgba(255, 255, 255, 0.3));
+}
+
+@theme {
+  --font-sans: var(--font-default);
+  --font-serif: var(--font-serif);
+  --color-background: var(--color-background);
+  --color-content: var(--color-content);
+}

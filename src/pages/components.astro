@@ -1,0 +1,43 @@
+---
+import { Button, ButtonGroup } from '@/components/ui/button/button';
+import { DialogDemo } from '@/components/ui/dialog/dialog';
+import { EmojiShowcase } from '@/components/ui/emoji';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { StrictMode } from 'react';
+---
+
+<PageLayout currentPage='/components'>
+  <p class='text-3xl text-center'>Components Showcase!</p>
+  <section class='mb-4'>
+    <p class='text-lg'>Here are some buttons:</p>
+    <section>
+      <Button variant='primary'>Click me</Button>
+      <Button variant='lavender'>Click me</Button>
+      <Button variant='light'>Click me</Button>
+    </section>
+    <section class='mt-8 mb-4'>
+      <p class='text-lg'>And some more buttons:</p>
+      <Button variant='light' size='large'>Large Button</Button>
+      <Button variant='lavender' size='normal'>Normal Button</Button>
+      <Button variant='primary' size='small'>Small Button</Button>
+    </section>
+    <section class='mt-8 mb-4'>
+      <p>Button Group should look great:</p>
+      <ButtonGroup>
+        <Button variant='lavender'>Button 1</Button>
+        <Button variant='lavender'>Button 2</Button>
+        <Button variant='lavender'>Button 3</Button>
+      </ButtonGroup>
+    </section>
+  </section>
+  <section class='mt-12 mb-8'>
+    <p class='text-lg mb-4'>Dialog (Radix UI):</p>
+    <div class='mt-4'>
+      <DialogDemo client:load />
+    </div>
+  </section>
+  <section class='mt-12'>
+    <p class='text-lg mb-4'>Emojis:</p>
+    <EmojiShowcase />
+  </section>
+</PageLayout>
