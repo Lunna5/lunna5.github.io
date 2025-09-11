@@ -1,6 +1,7 @@
 ---
-import { NavBar } from '@/components/navbar';
+import { NavBar } from '@/components/navigation/navbar';
 import BaseLayout from './BaseLayout.astro';
+import Footer from '@/components/navigation/footer';
 const { currentPage } = Astro.props;
 ---
 
@@ -13,5 +14,6 @@ const { currentPage } = Astro.props;
     <main class='p-4 flex-1'>
       <slot />
     </main>
+    <Footer />
   </main>
 </BaseLayout>

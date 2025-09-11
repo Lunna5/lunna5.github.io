@@ -1,6 +1,6 @@
 import logo from '@/assets/img/svg/logo.svg';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
-import { Dialog, DialogClose, DialogCloseButton, DialogContent, DialogTrigger } from './ui/dialog/dialog';
+import { Dialog, DialogClose, DialogCloseButton, DialogContent, DialogTrigger } from '@/components/ui/dialog/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
 const pages = [
