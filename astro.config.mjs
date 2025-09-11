@@ -11,6 +11,7 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://lunna.dev',
   integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [
