@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 3840 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+<svg width="100%" height="100%" viewBox="0 0 1920 1000" version="1.1"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xml:space="preserve" xmlns:serif="http://www.serif.com/"
+    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <use xlink:href="#_Image1" x="0" y="230.8" width="1065px" height="740px"/>
     <g transform="matrix(1,0,0,1,-39.2955,119.69)">
         <path d="M292.096,739.841L139.627,739.841L139.627,722.315C155.595,722.315 165.428,719.541 169.128,713.991C172.828,708.441 174.678,692.231 174.678,665.359L174.678,255.272C174.678,228.401 173.022,212.19 169.712,206.64C166.402,201.091 156.374,198.316 139.627,198.316L139.627,180.791L234.263,180.791L234.263,198.316C215.959,198.316 204.957,201.091 201.257,206.64C197.558,212.19 195.708,228.401 195.708,255.272L195.708,680.255C195.708,695.444 196.681,705.229 198.629,709.61C200.576,713.991 204.47,716.182 210.312,716.182L248.283,716.182C262.303,716.182 271.844,711.362 276.907,701.724C281.97,692.085 287.422,667.112 293.264,626.804L306.7,626.804L292.096,739.841Z" style="fill-rule:nonzero;"/>

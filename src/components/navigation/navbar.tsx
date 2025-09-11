@@ -16,7 +16,7 @@ export const NavBar = ({ currentPage }: { currentPage: string }) => {
   return (
     <div className='px-8 py-4 flex items-center sm:items-end justify-between align-middle'>
       <a href='/'>
-        <img src={logo.src} alt='Lunna Logo' className='w-sm' />
+        <img src={logo.src} alt='Lunna Logo' className='w-48' />
       </a>
 
       <nav>
