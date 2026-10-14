@@ -108,6 +108,39 @@ body {
   overflow-x: hidden;
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-paper);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-paper-alt);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-accent);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-paper);
+}
+
 html.dark img[src*='lunna_logo'],
 [data-theme='dark'] img[src*='lunna_logo'] {
   filter: invert(1);
