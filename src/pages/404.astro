@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NotFoundSection from '../components/NotFoundSection';
+import { useTranslations } from '../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+---
+
+<Layout title={t('404.title')} description={t('404.description')} lang={lang}>
+  <NotFoundSection client:load lang={lang} />
+</Layout>

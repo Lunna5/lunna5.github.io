@@ -107,4 +107,21 @@ export default {
   'footer.communityDesc': 'Want to chat with me or get involved in Nookure projects? Join the official Discord.',
   'footer.discordBtn': 'discord.nookure.com ↗',
   'footer.copyright': 'Lunna Martín González',
+
+  // 404
+  '404.title': 'Page Not Found — Lunna',
+  '404.description': 'Error 404: The page you are looking for does not exist or has been moved.',
+  '404.badge': 'ERROR 404 // FILE_NOT_FOUND',
+  '404.heading': 'Page Not Found.',
+  '404.subheading': 'Looks like you reached an uncharted sector of the portfolio.',
+  '404.message':
+    'The route you requested does not exist, may have been renamed, or was wiped during memory clean up. Check the URL or return to safety.',
+  '404.btnHome': 'Back to Home',
+  '404.btnProjects': 'View All Projects',
+  '404.btnDiscord': 'Ask on Discord ↗',
+  '404.terminal.title': 'terminal_dump.log',
+  '404.terminal.status': 'HTTP_STATUS: 404 (NOT_FOUND)',
+  '404.terminal.route': 'REQUESTED_PATH:',
+  '404.terminal.action': 'RECOVERY_SUGGESTION: Return to home or check public repositories.',
+  '404.quickLinks.title': 'Suggested Destinations',
 };
