@@ -42,7 +42,7 @@ const NotFoundSection: React.FC<NotFoundSectionProps> = ({ lang = 'en' }) => {
             <div className='bg-primary/30 pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl' />
             <div className='relative z-10 max-w-xl'>
               <div className='mb-4 flex items-baseline gap-4'>
-                <span className='text-ink font-serif text-sm font-bold tracking-tight text-base-300 sm:text-base'>
+                <span className='text-ink text-base-300 font-serif text-sm font-bold tracking-tight sm:text-base'>
                   404
                 </span>
                 <span className='text-accent font-mono text-sm font-bold tracking-widest uppercase'>

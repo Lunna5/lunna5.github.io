@@ -8,6 +8,11 @@ export default {
   'nav.allProjects': 'Todos los Proyectos',
   'nav.language': 'Idioma',
   'nav.switchLanguage': 'Cambiar idioma',
+  'nav.theme': 'Tema',
+  'nav.themeLight': 'Claro',
+  'nav.themeDark': 'Oscuro',
+  'nav.themeSystem': 'Sistema',
+  'nav.switchTheme': 'Cambiar tema',
 
   // Layout / Meta
   'site.title': 'Lunna — Portafolio de Desarrolladora de Software',

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import NavItem from './ui/NavItem';
 import Button from './ui/Button';
 import { useTranslations, useTranslatedPath, type SupportedLanguage } from '@/i18n/utils';
+import { IconSun, IconMoon, IconDeviceDesktop } from '@tabler/icons-react';
 
 interface NavbarProps {
   lang?: SupportedLanguage;
@@ -11,20 +12,65 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ lang = 'en', currentPath = '/' }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
   const langMenuRef = useRef<HTMLDivElement>(null);
+  const themeMenuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations(lang);
   const buildUrl = useTranslatedPath(lang);
 
-  // Close language dropdown on outside click
+  // Initialize theme and close menus on outside click
   useEffect(() => {
+    const saved = (localStorage.getItem('theme') as 'light' | 'dark' | 'system') || 'system';
+    setTheme(saved);
+
     const handleClickOutside = (event: MouseEvent) => {
       if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
         setLangMenuOpen(false);
+      }
+      if (themeMenuRef.current && !themeMenuRef.current.contains(event.target as Node)) {
+        setThemeMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Listen for system theme changes when in 'system' mode
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemChange = () => {
+      const saved = localStorage.getItem('theme');
+      if (!saved || saved === 'system') {
+        if (mediaQuery.matches) {
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      }
+    };
+    mediaQuery.addEventListener('change', handleSystemChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemChange);
+  }, []);
+
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
+    setTheme(newTheme);
+    setThemeMenuOpen(false);
+    localStorage.setItem('theme', newTheme);
+
+    const isDark =
+      newTheme === 'dark' || (newTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  };
 
   const enHref = buildUrl(currentPath, 'en');
   const esHref = buildUrl(currentPath, 'es');
@@ -111,6 +157,69 @@ const Navbar: React.FC<NavbarProps> = ({ lang = 'en', currentPath = '/' }) => {
             )}
           </div>
 
+          {/* Theme Selector */}
+          <div className='relative flex items-stretch' ref={themeMenuRef}>
+            <button
+              onClick={() => setThemeMenuOpen(!themeMenuOpen)}
+              className='hover:bg-primary/20 text-ink flex h-full cursor-pointer items-center gap-1.5 px-3.5 text-xs font-bold tracking-wider transition-colors sm:px-4 sm:text-sm'
+              aria-label={t('nav.switchTheme')}
+              aria-expanded={themeMenuOpen}
+              title={t('nav.theme')}
+            >
+              {theme === 'dark' ? (
+                <IconMoon size={18} className='text-ink' />
+              ) : theme === 'light' ? (
+                <IconSun size={18} className='text-ink' />
+              ) : (
+                <IconDeviceDesktop size={18} className='text-ink' />
+              )}
+              <span className={`text-3xs transition-transform duration-200 ${themeMenuOpen ? 'rotate-180' : ''}`}>
+                ▼
+              </span>
+            </button>
+
+            {themeMenuOpen && (
+              <div className='border-retro border-ink shadow-retro divide-ink/10 absolute top-full right-0 z-50 mt-1 flex w-36 flex-col divide-y bg-white py-1'>
+                <button
+                  type='button'
+                  onClick={() => handleThemeChange('light')}
+                  className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
+                    theme === 'light' ? 'bg-primary/20 text-accent' : 'text-ink'
+                  }`}
+                >
+                  <span className='flex items-center gap-2'>
+                    <IconSun size={15} /> {t('nav.themeLight')}
+                  </span>
+                  {theme === 'light' && <span className='font-bold'>✓</span>}
+                </button>
+                <button
+                  type='button'
+                  onClick={() => handleThemeChange('dark')}
+                  className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
+                    theme === 'dark' ? 'bg-primary/20 text-accent' : 'text-ink'
+                  }`}
+                >
+                  <span className='flex items-center gap-2'>
+                    <IconMoon size={15} /> {t('nav.themeDark')}
+                  </span>
+                  {theme === 'dark' && <span className='font-bold'>✓</span>}
+                </button>
+                <button
+                  type='button'
+                  onClick={() => handleThemeChange('system')}
+                  className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
+                    theme === 'system' ? 'bg-primary/20 text-accent' : 'text-ink'
+                  }`}
+                >
+                  <span className='flex items-center gap-2'>
+                    <IconDeviceDesktop size={15} /> {t('nav.themeSystem')}
+                  </span>
+                  {theme === 'system' && <span className='font-bold'>✓</span>}
+                </button>
+              </div>
+            )}
+          </div>
+
           <div className='bg-paper hidden items-center px-4 sm:flex md:px-5'>
             <Button
               variant='primary'
@@ -178,6 +287,42 @@ const Navbar: React.FC<NavbarProps> = ({ lang = 'en', currentPath = '/' }) => {
               >
                 Español
               </a>
+            </div>
+          </div>
+
+          {/* Mobile Theme Switcher */}
+          <div className='bg-paper-alt/40 flex items-center justify-between p-3.5'>
+            <span className='text-ink-muted font-mono text-xs font-bold uppercase'>{t('nav.theme')}:</span>
+            <div className='flex gap-1.5'>
+              <button
+                type='button'
+                onClick={() => handleThemeChange('light')}
+                className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
+                  theme === 'light' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
+                }`}
+              >
+                <IconSun size={13} /> {t('nav.themeLight')}
+              </button>
+              <button
+                type='button'
+                onClick={() => handleThemeChange('dark')}
+                className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
+                  theme === 'dark' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
+                }`}
+              >
+                <IconMoon size={13} /> {t('nav.themeDark')}
+              </button>
+              <button
+                type='button'
+                onClick={() => handleThemeChange('system')}
+                className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
+                  theme === 'system'
+                    ? 'bg-primary text-ink shadow-retro-sm'
+                    : 'text-ink hover:bg-surface-hover bg-white'
+                }`}
+              >
+                <IconDeviceDesktop size={13} /> {t('nav.themeSystem')}
+              </button>
             </div>
           </div>
         </div>

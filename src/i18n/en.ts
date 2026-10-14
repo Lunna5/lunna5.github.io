@@ -8,10 +8,16 @@ export default {
   'nav.allProjects': 'All Projects',
   'nav.language': 'Language',
   'nav.switchLanguage': 'Switch language',
+  'nav.theme': 'Theme',
+  'nav.themeLight': 'Light',
+  'nav.themeDark': 'Dark',
+  'nav.themeSystem': 'System',
+  'nav.switchTheme': 'Switch theme',
 
   // Layout / Meta
   'site.title': 'Lunna — Software Developer Portfolio',
-  'site.description': 'Lunna’s personal website and portfolio, showcasing projects, contributions, and skills as a software developer.',
+  'site.description':
+    'Lunna’s personal website and portfolio, showcasing projects, contributions, and skills as a software developer.',
   'projects.title': 'Lunna — Projects & Contributions',
   'projects.description': 'Public repositories, open source contributions, and personal projects by Lunna.',
 
