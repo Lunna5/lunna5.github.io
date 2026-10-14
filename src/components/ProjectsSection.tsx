@@ -69,12 +69,6 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({ lang = 'en' }) => {
               </h2>
               <p className='text-ink-muted mt-3 max-w-xl text-sm sm:text-base'>{t('projects.header.desc')}</p>
             </div>
-
-            <div className='flex flex-wrap items-center gap-3'>
-              <Button variant='primary' size='md'>
-                {t('projects.header.btnAdd')}
-              </Button>
-            </div>
           </div>
         </div>
 
