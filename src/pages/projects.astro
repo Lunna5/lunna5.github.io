@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectsSection from '../components/ProjectsSection';
+import DiscordSection from '../components/DiscordSection';
+import { useTranslations } from '../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+---
+
+<Layout title={t('projects.title')} description={t('projects.description')} lang={lang}>
+  <ProjectsSection client:load lang={lang} />
+  <DiscordSection client:load lang={lang} />
+</Layout>

@@ -1,11 +1,16 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection';
+import FeaturedProjectsSection from '../components/FeaturedProjectsSection';
+import DiscordSection from '../components/DiscordSection';
+import { useTranslations } from '../i18n/utils';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const lang = 'en';
+const t = useTranslations(lang);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={t('site.title')} description={t('site.description')} lang={lang}>
+  <HeroSection client:load lang={lang} />
+  <FeaturedProjectsSection client:load lang={lang} />
+  <DiscordSection client:load lang={lang} />
 </Layout>

@@ -1,23 +1,70 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '@/styles/global.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { getLangFromUrl, useTranslations, buildUrl, type SupportedLanguage } from '../i18n/utils';
+import { ClientRouter } from 'astro:transitions';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: SupportedLanguage;
+}
+
+const currentUrl = Astro.url;
+const lang = Astro.props.lang || getLangFromUrl(currentUrl);
+const t = useTranslations(lang);
+
+const {
+  title = t('site.title'),
+  description = t('site.description'),
+} = Astro.props;
+
+const enAlternateUrl = new URL(buildUrl(currentUrl.pathname, 'en'), currentUrl.origin).href;
+const esAlternateUrl = new URL(buildUrl(currentUrl.pathname, 'es'), currentUrl.origin).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <ClientRouter />
+
+    <!-- Alternate links for SEO in SSG -->
+    <link rel="alternate" hreflang="en" href={enAlternateUrl} />
+    <link rel="alternate" hreflang="es" href={esAlternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={enAlternateUrl} />
+
+    <!-- Google Fonts for authentic retro serif display + clean grotesque UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-paper text-icon antialiased selection:bg-primary selection:text-icon">
+    <div class="min-h-screen bg-paper flex justify-center">
+      <!-- Main Framed Container with Outer Border Lines -->
+      <div class="w-full max-w-[1680px] border-x-retro border-ink flex flex-col bg-paper relative">
+        <div class="flex flex-1">
+          <!-- Main Content Area -->
+          <main class="flex-1 flex flex-col min-w-0">
+            <Navbar client:load lang={lang} currentPath={currentUrl.pathname} />
+            <div>
+              <slot />
+            </div>
+            <Footer client:load lang={lang} />
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
