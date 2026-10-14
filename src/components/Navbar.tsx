@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import NavItem from './ui/NavItem';
 import Button from './ui/Button';
 import { useTranslations, useTranslatedPath, type SupportedLanguage } from '@/i18n/utils';
-import { IconSun, IconMoon, IconDeviceDesktop } from '@tabler/icons-react';
+import { IconSun, IconMoon, IconDeviceDesktop, IconWorld } from '@tabler/icons-react';
 
 interface NavbarProps {
   lang?: SupportedLanguage;
@@ -112,15 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({ lang = 'en', currentPath = '/' }) => {
               aria-label={t('nav.switchLanguage')}
               aria-expanded={langMenuOpen}
             >
-              <svg className='text-ink h-4 w-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
-                <circle cx='12' cy='12' r='9' />
-                <path strokeLinecap='round' strokeLinejoin='round' d='M3.6 9h16.8M3.6 15h16.8' />
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z'
-                />
-              </svg>
+              <IconWorld size={18} className='text-ink' />
               <span className='font-mono font-bold uppercase'>{lang.toUpperCase()}</span>
               <span className={`text-3xs transition-transform duration-200 ${langMenuOpen ? 'rotate-180' : ''}`}>
                 ▼
