@@ -11,7 +11,7 @@ export default {
 
   // Layout / Meta
   'site.title': 'Lunna — Software Developer Portfolio',
-  'site.description': 'Landing page inspired by retro editorial design with Astro, React and modern brutalist style.',
+  'site.description': 'Lunna’s personal website and portfolio, showcasing projects, contributions, and skills as a software developer.',
   'projects.title': 'Lunna — Projects & Contributions',
   'projects.description': 'Public repositories, open source contributions, and personal projects by Lunna.',
 
