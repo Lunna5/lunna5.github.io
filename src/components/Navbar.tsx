@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavItem from './ui/NavItem';
 import Button from './ui/Button';
+import Dropdown, { type DropdownItem } from './ui/Dropdown';
 import { useTranslations, useTranslatedPath, type SupportedLanguage } from '@/i18n/utils';
 import { IconSun, IconMoon, IconDeviceDesktop, IconWorld } from '@tabler/icons-react';
 
@@ -14,101 +15,44 @@ interface LanguageSelectorProps {
 }
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ lang, currentPath, mobile = false, onSelect }) => {
-  const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const langMenuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations(lang);
   const buildUrl = useTranslatedPath(lang);
 
-  const enHref = buildUrl(currentPath, 'en');
-  const esHref = buildUrl(currentPath, 'es');
-
-  useEffect(() => {
-    if (mobile) return;
-    const handleClickOutside = (event: MouseEvent) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
-        setLangMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mobile]);
-
-  if (mobile) {
-    return (
-      <div className='bg-paper-alt/40 flex items-center justify-between p-3.5'>
-        <span className='text-ink-muted font-mono text-xs font-bold uppercase'>{t('nav.language')}:</span>
-        <div className='flex gap-2'>
-          <a
-            href={enHref}
-            onClick={onSelect}
-            className={`border-ink rounded-sm border px-3 py-1 text-xs font-bold transition-all ${
-              lang === 'en' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
-            }`}
-          >
-            English
-          </a>
-          <a
-            href={esHref}
-            onClick={onSelect}
-            className={`border-ink rounded-sm border px-3 py-1 text-xs font-bold transition-all ${
-              lang === 'es' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
-            }`}
-          >
-            Español
-          </a>
-        </div>
-      </div>
-    );
-  }
+  const items: DropdownItem[] = [
+    {
+      id: 'en',
+      icon: <span>🇬🇧</span>,
+      label: 'English',
+      mobileLabel: 'English',
+      href: buildUrl(currentPath, 'en'),
+      active: lang === 'en',
+      onClick: onSelect,
+    },
+    {
+      id: 'es',
+      icon: <span>🇪🇸</span>,
+      label: 'Español',
+      mobileLabel: 'Español',
+      href: buildUrl(currentPath, 'es'),
+      active: lang === 'es',
+      onClick: onSelect,
+    },
+  ];
 
   return (
-    <div className='relative flex items-stretch' ref={langMenuRef}>
-      <button
-        onClick={() => setLangMenuOpen(!langMenuOpen)}
-        className='hover:bg-primary/20 text-ink flex h-full cursor-pointer items-center gap-2 px-4 text-xs font-bold tracking-wider transition-colors sm:px-5 sm:text-sm'
-        aria-label={t('nav.switchLanguage')}
-        aria-expanded={langMenuOpen}
-      >
-        <IconWorld size={18} className='text-ink' />
-        <span className='font-mono font-bold uppercase'>{lang.toUpperCase()}</span>
-        <span className={`text-3xs transition-transform duration-200 ${langMenuOpen ? 'rotate-180' : ''}`}>▼</span>
-      </button>
-
-      {langMenuOpen && (
-        <div className='border-retro border-ink shadow-retro divide-ink/10 absolute top-full right-0 z-50 mt-1 flex w-36 flex-col divide-y bg-white py-1'>
-          <a
-            href={enHref}
-            onClick={() => {
-              setLangMenuOpen(false);
-              onSelect?.();
-            }}
-            className={`hover:bg-primary/25 flex items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
-              lang === 'en' ? 'bg-primary/20 text-accent' : 'text-ink'
-            }`}
-          >
-            <span className='flex items-center gap-1.5'>
-              <span>🇬🇧</span> English
-            </span>
-            {lang === 'en' && <span className='font-bold'>✓</span>}
-          </a>
-          <a
-            href={esHref}
-            onClick={() => {
-              setLangMenuOpen(false);
-              onSelect?.();
-            }}
-            className={`hover:bg-primary/25 flex items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
-              lang === 'es' ? 'bg-primary/20 text-accent' : 'text-ink'
-            }`}
-          >
-            <span className='flex items-center gap-1.5'>
-              <span>🇪🇸</span> Español
-            </span>
-            {lang === 'es' && <span className='font-bold'>✓</span>}
-          </a>
-        </div>
-      )}
-    </div>
+    <Dropdown
+      mobile={mobile}
+      mobileLabel={t('nav.language')}
+      items={items}
+      ariaLabel={t('nav.switchLanguage')}
+      triggerClassName='px-4 sm:px-5'
+      trigger={
+        <>
+          <IconWorld size={18} className='text-ink' />
+          <span className='font-mono font-bold uppercase'>{lang.toUpperCase()}</span>
+        </>
+      }
+    />
   );
 };
 
@@ -118,9 +62,7 @@ interface ThemeSelectorProps {
 }
 
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ lang, mobile = false }) => {
-  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>('system');
-  const themeMenuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations(lang);
 
   useEffect(() => {
@@ -136,17 +78,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ lang, mobile = fal
     window.addEventListener('theme-changed', handleThemeEvent);
     return () => window.removeEventListener('theme-changed', handleThemeEvent);
   }, []);
-
-  useEffect(() => {
-    if (mobile) return;
-    const handleClickOutside = (event: MouseEvent) => {
-      if (themeMenuRef.current && !themeMenuRef.current.contains(event.target as Node)) {
-        setThemeMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mobile]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -168,7 +99,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ lang, mobile = fal
 
   const handleThemeChange = (newTheme: ThemeMode) => {
     setTheme(newTheme);
-    setThemeMenuOpen(false);
     localStorage.setItem('theme', newTheme);
 
     const isDark =
@@ -185,103 +115,51 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ lang, mobile = fal
     window.dispatchEvent(new CustomEvent('theme-changed', { detail: newTheme }));
   };
 
-  if (mobile) {
-    return (
-      <div className='bg-paper-alt/40 flex items-center justify-between p-3.5'>
-        <span className='text-ink-muted font-mono text-xs font-bold uppercase'>{t('nav.theme')}:</span>
-        <div className='flex gap-1.5'>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('light')}
-            className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
-              theme === 'light' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
-            }`}
-          >
-            <IconSun size={13} /> {t('nav.themeLight')}
-          </button>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('dark')}
-            className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
-              theme === 'dark' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
-            }`}
-          >
-            <IconMoon size={13} /> {t('nav.themeDark')}
-          </button>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('system')}
-            className={`border-ink flex cursor-pointer items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-bold transition-all ${
-              theme === 'system' ? 'bg-primary text-ink shadow-retro-sm' : 'text-ink hover:bg-surface-hover bg-white'
-            }`}
-          >
-            <IconDeviceDesktop size={13} /> {t('nav.themeSystem')}
-          </button>
-        </div>
-      </div>
+  const themeIcon =
+    theme === 'dark' ? (
+      <IconMoon size={18} className='text-ink' />
+    ) : theme === 'light' ? (
+      <IconSun size={18} className='text-ink' />
+    ) : (
+      <IconDeviceDesktop size={18} className='text-ink' />
     );
-  }
+
+  const items: DropdownItem[] = [
+    {
+      id: 'light',
+      icon: <IconSun size={15} />,
+      mobileIcon: <IconSun size={13} />,
+      label: t('nav.themeLight'),
+      active: theme === 'light',
+      onClick: () => handleThemeChange('light'),
+    },
+    {
+      id: 'dark',
+      icon: <IconMoon size={15} />,
+      mobileIcon: <IconMoon size={13} />,
+      label: t('nav.themeDark'),
+      active: theme === 'dark',
+      onClick: () => handleThemeChange('dark'),
+    },
+    {
+      id: 'system',
+      icon: <IconDeviceDesktop size={15} />,
+      mobileIcon: <IconDeviceDesktop size={13} />,
+      label: t('nav.themeSystem'),
+      active: theme === 'system',
+      onClick: () => handleThemeChange('system'),
+    },
+  ];
 
   return (
-    <div className='relative flex items-stretch' ref={themeMenuRef}>
-      <button
-        onClick={() => setThemeMenuOpen(!themeMenuOpen)}
-        className='hover:bg-primary/20 text-ink flex h-full cursor-pointer items-center gap-1.5 px-3.5 text-xs font-bold tracking-wider transition-colors sm:px-4 sm:text-sm'
-        aria-label={t('nav.switchTheme')}
-        aria-expanded={themeMenuOpen}
-        title={t('nav.theme')}
-      >
-        {theme === 'dark' ? (
-          <IconMoon size={18} className='text-ink' />
-        ) : theme === 'light' ? (
-          <IconSun size={18} className='text-ink' />
-        ) : (
-          <IconDeviceDesktop size={18} className='text-ink' />
-        )}
-        <span className={`text-3xs transition-transform duration-200 ${themeMenuOpen ? 'rotate-180' : ''}`}>▼</span>
-      </button>
-
-      {themeMenuOpen && (
-        <div className='border-retro border-ink shadow-retro divide-ink/10 absolute top-full right-0 z-50 mt-1 flex w-36 flex-col divide-y bg-white py-1'>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('light')}
-            className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
-              theme === 'light' ? 'bg-primary/20 text-accent' : 'text-ink'
-            }`}
-          >
-            <span className='flex items-center gap-2'>
-              <IconSun size={15} /> {t('nav.themeLight')}
-            </span>
-            {theme === 'light' && <span className='font-bold'>✓</span>}
-          </button>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('dark')}
-            className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
-              theme === 'dark' ? 'bg-primary/20 text-accent' : 'text-ink'
-            }`}
-          >
-            <span className='flex items-center gap-2'>
-              <IconMoon size={15} /> {t('nav.themeDark')}
-            </span>
-            {theme === 'dark' && <span className='font-bold'>✓</span>}
-          </button>
-          <button
-            type='button'
-            onClick={() => handleThemeChange('system')}
-            className={`hover:bg-primary/25 flex w-full cursor-pointer items-center justify-between px-3 py-2 text-xs font-bold transition-colors ${
-              theme === 'system' ? 'bg-primary/20 text-accent' : 'text-ink'
-            }`}
-          >
-            <span className='flex items-center gap-2'>
-              <IconDeviceDesktop size={15} /> {t('nav.themeSystem')}
-            </span>
-            {theme === 'system' && <span className='font-bold'>✓</span>}
-          </button>
-        </div>
-      )}
-    </div>
+    <Dropdown
+      mobile={mobile}
+      mobileLabel={t('nav.theme')}
+      items={items}
+      trigger={themeIcon}
+      ariaLabel={t('nav.switchTheme')}
+      title={t('nav.theme')}
+    />
   );
 };
 
