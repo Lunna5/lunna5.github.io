@@ -78,12 +78,19 @@ const esAlternateUrl = new URL(buildUrl(currentUrl.pathname, 'es'), currentUrl.o
     <link rel="alternate" hreflang="es" href={esAlternateUrl} />
     <link rel="alternate" hreflang="x-default" href={enAlternateUrl} />
 
-    <!-- Google Fonts for authentic retro serif display + clean grotesque UI -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/plus-jakarta-sans-normal-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/newsreader-normal-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
   </head>
   <body class="bg-paper text-icon antialiased selection:bg-primary selection:text-icon">

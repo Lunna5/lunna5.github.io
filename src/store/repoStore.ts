@@ -155,8 +155,7 @@ async function fetchRepoFromGitHub(config: RepoConfig): Promise<RepoItem> {
           languages = topLangs;
         }
       }
-    } catch {
-    }
+    } catch {}
 
     if (languages.length === 0 && data.language) {
       languages = [data.language];
