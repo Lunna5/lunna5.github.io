@@ -77,7 +77,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ lang = 'en' }) => {
               </Button>
 
               <Button
-                variant='outline'
+                variant='secondary'
                 size='lg'
                 href='https://discord.nookure.com'
                 target='_blank'
