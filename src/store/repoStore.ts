@@ -98,7 +98,7 @@ export const INITIAL_REPO_CONFIGS: RepoConfig[] = [
 ];
 
 const CACHE_STORAGE_KEY = 'lunna_portfolio_repos_cache_v3';
-const CACHE_TTL_MS = 1000 * 60 * 60 * 2; // 2 horas de caché
+const CACHE_TTL_MS = 1000 * 60 * 60 * 2;
 
 function loadLocalCache(): { repos: RepoItem[]; timestamp: number } | null {
   if (typeof window === 'undefined') return null;
@@ -145,7 +145,6 @@ async function fetchRepoFromGitHub(config: RepoConfig): Promise<RepoItem> {
 
     const data = await res.json();
 
-    // Intentar traer los lenguajes detallados
     let languages = config.defaultLanguages || [];
     try {
       const langRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/languages`);
@@ -157,7 +156,6 @@ async function fetchRepoFromGitHub(config: RepoConfig): Promise<RepoItem> {
         }
       }
     } catch {
-      // Ignorar fallo de lenguajes secundarios
     }
 
     if (languages.length === 0 && data.language) {
@@ -183,7 +181,6 @@ async function fetchRepoFromGitHub(config: RepoConfig): Promise<RepoItem> {
       tlKey: config.tlKey,
     };
   } catch (e) {
-    // Retornar fallback con datos configurados en caso de rate-limit o sin conexión
     return {
       id: config.fullName.toLowerCase(),
       fullName: config.fullName,
@@ -205,7 +202,6 @@ async function fetchRepoFromGitHub(config: RepoConfig): Promise<RepoItem> {
   }
 }
 
-// Convertir configs iniciales en items iniciales para SSR
 const INITIAL_FALLBACK_REPOS: RepoItem[] = INITIAL_REPO_CONFIGS.map((cfg) => {
   const [owner, repo] = cfg.fullName.split('/');
   return {
@@ -253,7 +249,6 @@ export const useRepoStore = create<RepoStore>((set, get) => ({
   setSearchQuery: (query: string) => set({ searchQuery: query }),
 
   fetchRepos: async (forceRefresh = false) => {
-    // 1. Revisar caché en localStorage
     if (!forceRefresh) {
       const cached = loadLocalCache();
       if (cached && cached.repos.length > 0) {
@@ -268,15 +263,11 @@ export const useRepoStore = create<RepoStore>((set, get) => ({
 
     set({ isLoading: true });
 
-    // Simular un delay mínimo de 400ms para mostrar suavemente el skeleton
     const configs = get().configs;
     const fetchPromises = configs.map((cfg) => fetchRepoFromGitHub(cfg));
 
     try {
-      const [results] = await Promise.all([
-        Promise.all(fetchPromises),
-        new Promise((resolve) => setTimeout(resolve, 500)),
-      ]);
+      const results = await Promise.all(fetchPromises);
 
       saveLocalCache(results);
       set({
@@ -300,7 +291,6 @@ export const useRepoStore = create<RepoStore>((set, get) => ({
     const formattedFullName = `${parts[0]}/${parts[1]}`;
     const currentRepos = get().repos;
 
-    // Verificar si ya existe
     if (currentRepos.some((r) => r.fullName.toLowerCase() === formattedFullName.toLowerCase())) {
       return true;
     }
